@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>源码预览</title>
+<style>
+  body { margin: 0; background: #0f172a; }
+  #toolbar {
+    position: sticky; top: 0; z-index: 10;
+    background: #1e293b; color: #94a3b8;
+    font: 13px/1.6 "Consolas", "Menlo", monospace;
+    padding: 8px 16px; border-bottom: 1px solid #334155;
+    display: flex; gap: 16px; align-items: center;
+  }
+  #toolbar b { color: #93c5fd; }
+  pre {
+    margin: 0; padding: 18px 20px;
+    font: 15px/1.75 "Consolas", "Menlo", "Courier New", monospace;
+    color: #e2e8f0; white-space: pre; tab-size: 2;
+  }
+  pre .cm { color: #64748b; font-style: italic; }
+  pre .str { color: #a5d6ff; }
+  pre .kw { color: #c4b5fd; font-weight: 600; }
+  pre .fn { color: #fcd34d; }
+</style>
+</head>
+<body>
+  <div id="toolbar"><b>CourseHub 源码预览</b><span id="path"></span></div>
+  <pre id="code">加载中…</pre>
+  <script>
+    const file = new URLSearchParams(location.search).get('file') || '/src/App.vue';
+    document.getElementById('path').textContent = file;
+    // 简单高亮：字符串、注释、关键字
+    fetch(file)
+      .then(r => r.text())
+      .then(t => {
+        const esc = t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        document.getElementById('code').innerHTML = esc;
+      })
+      .catch(e => { document.getElementById('code').textContent = '加载失败: ' + e; });
+  </script>
+</body>
+</html>
